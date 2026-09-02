@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Header from '../components/Header'
 import HeroBanner from '../components/HeroBanner'
 import CampaignBanners from '../components/CampaignBanners'
@@ -12,6 +13,17 @@ import TrustTokens from '../components/TrustTokens'
 import Footer from '../components/Footer'
 
 export default function Home() {
+  useEffect(() => {
+    document.title = 'P. C. Chandra Jewellers | A Jewel of Jewels — 85 Years of Pure Trust & Karigari'
+    const metaDesc = document.querySelector('meta[name="description"]')
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        'Explore handcrafted 22KT BIS 916 hallmarked gold, certified natural diamonds, and royal bridal heirlooms by P. C. Chandra Jewellers. Serving timeless Bengali karigari and live bullion gold rates since 1939.'
+      )
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-white text-neutral-900 flex flex-col">
       {/* 100vh Hero Viewport: Header + Hero occupies exactly full screen on load */}

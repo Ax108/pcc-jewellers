@@ -184,10 +184,10 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Navigation Bar (Desktop) */}
-      <nav className="hidden border-t border-neutral-150 bg-[#FAF8F5] md:block">
+      {/* Main Navigation Bar (Desktop) - Sleek & Refined */}
+      <nav className="hidden border-t border-neutral-200/70 bg-[#FAF8F5]/95 md:block">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <ul className="flex items-center justify-center gap-9 py-3">
+          <ul className="flex items-center justify-center gap-7 lg:gap-8 py-1.5">
             {NAV_LINKS.map((link) => {
               let targetHref = '/collections'
               if (link.label === 'Gold') targetHref = '/collections?metal=gold'
@@ -199,10 +199,10 @@ export default function Header() {
                 <li key={link.label}>
                   <Link
                     to={targetHref}
-                    className="group relative text-[15.5px] font-medium tracking-wide text-neutral-800 transition-colors hover:text-[#801424]"
+                    className="group relative text-[13px] font-medium tracking-wide text-neutral-700 transition-colors hover:text-[#801424]"
                   >
                     {link.label}
-                    <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[#801424] transition-all duration-300 group-hover:w-full" />
+                    <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-[#801424] transition-all duration-300 group-hover:w-full" />
                   </Link>
                 </li>
               )

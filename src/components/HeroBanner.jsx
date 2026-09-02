@@ -22,44 +22,95 @@ export default function HeroBanner() {
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
           {/* Content Column */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.12,
+                  delayChildren: 0.1,
+                },
+              },
+            }}
             className="lg:col-span-6 xl:col-span-5 space-y-5 text-white"
           >
             {/* Title */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-white font-editorial leading-[1.14]">
+            <motion.h1
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+                },
+              }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-white font-editorial leading-[1.14]"
+            >
               {HERO_DATA.title}
-              <span className="block mt-2 font-serif italic text-amber-300">
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 16 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] },
+                  },
+                }}
+                className="block mt-2 font-serif italic text-amber-300"
+              >
                 {HERO_DATA.highlight}
-              </span>
-            </h1>
+              </motion.span>
+            </motion.h1>
 
             {/* Description */}
-            <p className="text-sm sm:text-base leading-relaxed text-neutral-200 max-w-xl font-light">
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 16 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+              }}
+              className="text-sm sm:text-base leading-relaxed text-neutral-200 max-w-xl font-light"
+            >
               {HERO_DATA.description}
-            </p>
+            </motion.p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Link
-                to="/collections"
-                className="inline-flex items-center gap-2 rounded-md bg-[#801424] px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-[#9B1C2E] hover:shadow-xl"
-              >
-                <span>{HERO_DATA.primaryCta}</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 16 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+              }}
+              className="flex flex-wrap items-center gap-4 pt-2"
+            >
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to="/collections"
+                  className="inline-flex items-center gap-2 rounded-md bg-[#801424] px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-[#9B1C2E] hover:shadow-2xl hover:shadow-[#801424]/40"
+                >
+                  <span>{HERO_DATA.primaryCta}</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </motion.div>
 
-              <a
-                href="#video-consult"
-                className="inline-flex items-center gap-2 rounded-md border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white shadow-sm backdrop-blur-xs transition-colors hover:border-white hover:bg-white/20"
-              >
-                <span>{HERO_DATA.secondaryCta}</span>
-              </a>
-            </div>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <a
+                  href="#video-consult"
+                  className="inline-flex items-center gap-2 rounded-md border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white shadow-sm backdrop-blur-xs transition-colors hover:border-white hover:bg-white/20"
+                >
+                  <span>{HERO_DATA.secondaryCta}</span>
+                </a>
+              </motion.div>
+            </motion.div>
 
             {/* Trust Assurance Line */}
-            <div className="flex items-center gap-5 border-t border-white/20 pt-5 text-xs text-neutral-300">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { duration: 0.8, delay: 0.4 } },
+              }}
+              className="flex items-center gap-5 border-t border-white/20 pt-5 text-xs text-neutral-300"
+            >
               <div className="flex items-center gap-2 font-medium text-white">
                 <Award className="h-4 w-4 text-amber-400" />
                 <span>100% BIS 916 Hallmarked Gold</span>
@@ -68,17 +119,21 @@ export default function HeroBanner() {
               <div className="font-medium text-white">
                 <span>IGI & SGL Certified Natural Diamonds</span>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Reverted Content Image Showcase (the way it was at first) */}
+          {/* Reverted Content Image Showcase with Gentle Float */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             className="lg:col-span-6 xl:col-span-7"
           >
-            <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-neutral-950 shadow-2xl">
+            <motion.div
+              animate={{ y: [0, -7, 0] }}
+              transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
+              className="group relative overflow-hidden rounded-2xl border border-white/20 bg-neutral-950 shadow-2xl"
+            >
               <img
                 src={HERO_DATA.image}
                 alt="The Royal Bengal Heritage Gold & Diamond Collection"
@@ -86,7 +141,12 @@ export default function HeroBanner() {
               />
 
               {/* Floating Quality Tag */}
-              <div className="absolute right-4 bottom-4 left-4 rounded-xl border border-white/20 bg-black/80 px-5 py-3 text-white backdrop-blur-sm sm:right-6 sm:bottom-6 sm:left-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="absolute right-4 bottom-4 left-4 rounded-xl border border-white/20 bg-black/80 px-5 py-3 text-white backdrop-blur-sm sm:right-6 sm:bottom-6 sm:left-auto"
+              >
                 <p className="text-[11px] font-medium tracking-widest text-[#F2C94C] uppercase">
                   Featured Masterwork
                 </p>
@@ -96,8 +156,8 @@ export default function HeroBanner() {
                 <p className="text-xs text-neutral-300">
                   Natural Zambian Emeralds • Bengali Filigree Art
                 </p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

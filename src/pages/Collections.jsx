@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Heart,
   ShoppingBag,
@@ -307,6 +308,23 @@ export default function Collections() {
     }
   }, [activeCategory])
 
+  // Dynamic SEO title & meta description update
+  useEffect(() => {
+    let title = `${bannerInfo.title} | P. C. Chandra Jewellers`
+    if (searchQuery.trim()) {
+      title = `Search: "${searchQuery}" | P. C. Chandra Jewellers`
+    }
+    document.title = title
+
+    const metaDesc = document.querySelector('meta[name="description"]')
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        `Explore P. C. Chandra Jewellers ${bannerInfo.title.toLowerCase()} — ${bannerInfo.subtitle}. Handcrafted in Kolkata with 100% BIS 916 Hallmarked purity.`
+      )
+    }
+  }, [bannerInfo, searchQuery])
+
   return (
     <div className="min-h-screen bg-[#FBF9F6] text-neutral-900 flex flex-col">
       <Header />
@@ -344,7 +362,13 @@ export default function Collections() {
       >
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ECC880_1px,transparent_1px)] [background-size:16px_16px]" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-center md:text-left">
+          <motion.div
+            key={bannerInfo.title}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center md:text-left"
+          >
             <span className="inline-block text-xs uppercase tracking-[0.25em] text-amber-300 font-semibold mb-2">
               P. C. Chandra Jewellers • 85 Years of Trust
             </span>
@@ -354,13 +378,15 @@ export default function Collections() {
             <p className="text-sm sm:text-base text-neutral-300 mt-2 max-w-xl font-light">
               {bannerInfo.subtitle}
             </p>
-          </div>
+          </motion.div>
 
           {/* Quick Category Switcher Pills */}
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 max-w-lg">
             {CATEGORIES_LIST.map((cat) => (
-              <button
+              <motion.button
                 key={cat.id}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={() => handleCategoryClick(cat.id)}
                 className={`text-xs px-3.5 py-1.5 rounded-full transition-all ${
@@ -370,7 +396,7 @@ export default function Collections() {
                 }`}
               >
                 {cat.label}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -660,133 +686,144 @@ export default function Collections() {
               </div>
             ) : (
               <div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {displayedProducts.map((product) => {
-                    const isWishlisted = wishlist.includes(product.id)
-                    const isAdded = cartAdded[product.id]
-                    const discountAmount = product.originalPrice - product.price
+                <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                  <AnimatePresence mode="popLayout">
+                    {displayedProducts.map((product) => {
+                      const isWishlisted = wishlist.includes(product.id)
+                      const isAdded = cartAdded[product.id]
+                      const discountAmount = product.originalPrice - product.price
 
-                    return (
-                      <div
-                        key={product.id}
-                        className="group flex flex-col rounded-xl border border-neutral-200/90 bg-white shadow-xs transition-all duration-300 hover:border-[#801424]/40 hover:shadow-xl"
-                      >
-                        {/* Product Image Frame */}
-                        <div className="relative aspect-square overflow-hidden rounded-t-xl bg-[#FAF6F0]">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
-                          />
+                      return (
+                        <motion.div
+                          layout
+                          key={product.id}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                          whileHover={{ y: -8, transition: { type: 'spring', stiffness: 350, damping: 22 } }}
+                          className="group flex flex-col rounded-xl border border-neutral-200/90 bg-white shadow-xs transition-all duration-300 hover:border-[#801424]/40 hover:shadow-xl"
+                        >
+                          {/* Product Image Frame */}
+                          <div className="relative aspect-square overflow-hidden rounded-t-xl bg-[#FAF6F0]">
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              loading="lazy"
+                              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                            />
 
-                          {/* Badges on Top Left */}
-                          <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start pointer-events-none">
-                            <span className="whitespace-nowrap rounded-full bg-white/95 backdrop-blur-xs px-2.5 py-0.5 text-[10px] font-semibold text-neutral-800 shadow-sm border border-neutral-100">
-                              {product.badge}
-                            </span>
-                            {product.weight && (
-                              <span className="whitespace-nowrap rounded-full bg-neutral-900/85 backdrop-blur-xs px-2 py-0.5 text-[9px] font-medium text-amber-200 shadow-xs">
-                                {product.weight}
+                            {/* Badges on Top Left */}
+                            <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start pointer-events-none">
+                              <span className="whitespace-nowrap rounded-full bg-white/95 backdrop-blur-xs px-2.5 py-0.5 text-[10px] font-semibold text-neutral-800 shadow-sm border border-neutral-100">
+                                {product.badge}
                               </span>
-                            )}
-                          </div>
-
-                          {/* Top Right Action Buttons (Video/360 camera badge as in screenshot + Wishlist) */}
-                          <div className="absolute top-3 right-3 flex items-center gap-1.5">
-                            {product.videoPreview && (
-                              <button
-                                type="button"
-                                title="360° Studio View Available"
-                                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-[#801424] shadow-sm hover:bg-[#801424] hover:text-white transition-colors"
-                                aria-label="360 Video View"
-                              >
-                                <Video className="h-4 w-4" />
-                              </button>
-                            )}
-
-                            <button
-                              type="button"
-                              onClick={() => toggleWishlist(product.id)}
-                              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-neutral-700 shadow-sm transition-transform active:scale-90 hover:text-[#801424]"
-                              aria-label="Add to wishlist"
-                            >
-                              <Heart
-                                className={`h-4 w-4 ${
-                                  isWishlisted ? 'fill-[#801424] text-[#801424]' : ''
-                                }`}
-                              />
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Card Content */}
-                        <div className="flex flex-1 flex-col p-5">
-                          <p className="text-[11px] font-medium tracking-wide text-neutral-500 line-clamp-1">
-                            {product.metal}
-                          </p>
-
-                          <h3 className="mt-1.5 text-base font-semibold text-neutral-900 group-hover:text-[#801424] transition-colors line-clamp-1">
-                            {product.name}
-                          </h3>
-
-                          {/* Rating */}
-                          <div className="mt-2 flex items-center gap-1.5 text-xs text-neutral-600">
-                            <div className="flex items-center text-amber-500">
-                              <Star className="h-3.5 w-3.5 fill-amber-400" />
-                            </div>
-                            <span className="font-semibold text-neutral-800">{product.rating}</span>
-                            <span className="text-neutral-400 text-[11px]">
-                              ({product.reviews} reviews)
-                            </span>
-                          </div>
-
-                          {/* Price & Savings Badge (Single uniform row, never wrapping) */}
-                          <div className="mt-4 flex items-center justify-between gap-1.5">
-                            <div className="flex items-baseline gap-1.5 sm:gap-2 min-w-0">
-                              <span className="text-base sm:text-lg font-bold text-neutral-900 whitespace-nowrap">
-                                ₹{product.price.toLocaleString('en-IN')}
-                              </span>
-                              <span className="text-xs text-neutral-400 line-through whitespace-nowrap">
-                                ₹{product.originalPrice.toLocaleString('en-IN')}
-                              </span>
-                            </div>
-                            {discountAmount > 0 && (
-                              <span className="inline-flex items-center whitespace-nowrap shrink-0 rounded bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 leading-normal">
-                                Save ₹{discountAmount.toLocaleString('en-IN')}
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Action Button (Pinned to bottom with mt-auto for identical alignment) */}
-                          <div className="mt-auto pt-4 border-t border-neutral-100">
-                            <button
-                              type="button"
-                              onClick={() => handleAddToCart(product.id)}
-                              className={`flex w-full items-center justify-center gap-2 rounded-md py-2.5 text-xs font-semibold tracking-wider uppercase transition-all duration-200 ${
-                                isAdded
-                                  ? 'bg-emerald-700 text-white'
-                                  : 'bg-neutral-900 text-white hover:bg-[#801424]'
-                              }`}
-                            >
-                              {isAdded ? (
-                                <>
-                                  <Check className="h-4 w-4" />
-                                  <span>Added to Bag</span>
-                                </>
-                              ) : (
-                                <>
-                                  <ShoppingBag className="h-4 w-4" />
-                                  <span>Add to Cart</span>
-                                </>
+                              {product.weight && (
+                                <span className="whitespace-nowrap rounded-full bg-neutral-900/85 backdrop-blur-xs px-2 py-0.5 text-[9px] font-medium text-amber-200 shadow-xs">
+                                  {product.weight}
+                                </span>
                               )}
-                            </button>
+                            </div>
+
+                            {/* Top Right Action Buttons */}
+                            <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                              {product.videoPreview && (
+                                <button
+                                  type="button"
+                                  title="360° Studio View Available"
+                                  className="flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-[#801424] shadow-sm hover:bg-[#801424] hover:text-white transition-colors"
+                                  aria-label="360 Video View"
+                                >
+                                  <Video className="h-4 w-4" />
+                                </button>
+                              )}
+
+                              <motion.button
+                                whileTap={{ scale: 0.75 }}
+                                type="button"
+                                onClick={() => toggleWishlist(product.id)}
+                                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-neutral-700 shadow-sm transition-colors hover:text-[#801424]"
+                                aria-label="Add to wishlist"
+                              >
+                                <Heart
+                                  className={`h-4 w-4 ${
+                                    isWishlisted ? 'fill-[#801424] text-[#801424]' : ''
+                                  }`}
+                                />
+                              </motion.button>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
+
+                          {/* Card Content */}
+                          <div className="flex flex-1 flex-col p-5">
+                            <p className="text-[11px] font-medium tracking-wide text-neutral-500 line-clamp-1">
+                              {product.metal}
+                            </p>
+
+                            <h3 className="mt-1.5 text-base font-semibold text-neutral-900 group-hover:text-[#801424] transition-colors line-clamp-1">
+                              {product.name}
+                            </h3>
+
+                            {/* Rating */}
+                            <div className="mt-2 flex items-center gap-1.5 text-xs text-neutral-600">
+                              <div className="flex items-center text-amber-500">
+                                <Star className="h-3.5 w-3.5 fill-amber-400" />
+                              </div>
+                              <span className="font-semibold text-neutral-800">{product.rating}</span>
+                              <span className="text-neutral-400 text-[11px]">
+                                ({product.reviews} reviews)
+                              </span>
+                            </div>
+
+                            {/* Price & Savings Badge */}
+                            <div className="mt-4 flex items-center justify-between gap-1.5">
+                              <div className="flex items-baseline gap-1.5 sm:gap-2 min-w-0">
+                                <span className="text-base sm:text-lg font-bold text-neutral-900 whitespace-nowrap">
+                                  ₹{product.price.toLocaleString('en-IN')}
+                                </span>
+                                <span className="text-xs text-neutral-400 line-through whitespace-nowrap">
+                                  ₹{product.originalPrice.toLocaleString('en-IN')}
+                                </span>
+                              </div>
+                              {discountAmount > 0 && (
+                                <span className="inline-flex items-center whitespace-nowrap shrink-0 rounded bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 leading-normal">
+                                  Save ₹{discountAmount.toLocaleString('en-IN')}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Action Button */}
+                            <div className="mt-auto pt-4 border-t border-neutral-100">
+                              <motion.button
+                                whileTap={{ scale: 0.97 }}
+                                whileHover={{ scale: 1.01 }}
+                                type="button"
+                                onClick={() => handleAddToCart(product.id)}
+                                className={`flex w-full items-center justify-center gap-2 rounded-md py-2.5 text-xs font-semibold tracking-wider uppercase transition-all duration-200 ${
+                                  isAdded
+                                    ? 'bg-emerald-700 text-white'
+                                    : 'bg-neutral-900 text-white hover:bg-[#801424]'
+                                }`}
+                              >
+                                {isAdded ? (
+                                  <>
+                                    <Check className="h-4 w-4" />
+                                    <span>Added to Bag</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <ShoppingBag className="h-4 w-4" />
+                                    <span>Add to Cart</span>
+                                  </>
+                                )}
+                              </motion.button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )
+                    })}
+                  </AnimatePresence>
+                </motion.div>
 
                 {/* Auto Load Sentinel & Progressive Loading Indicator */}
                 {visibleCount < filteredProducts.length && (

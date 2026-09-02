@@ -1,14 +1,21 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { HERITAGE_STORY } from '../configs/siteContent'
 
 export default function HeritageSection() {
   return (
-    <section className="bg-[#FAF8F5] py-16 sm:py-20 border-b border-neutral-200">
+    <section className="bg-[#FAF8F5] py-16 sm:py-20 border-b border-neutral-200 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
           {/* Content Column */}
-          <div className="lg:col-span-6 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 space-y-6"
+          >
             <h2 className="text-4xl sm:text-5xl font-normal text-neutral-900 font-editorial leading-tight tracking-tight">
               {HERITAGE_STORY.title}
             </h2>
@@ -20,41 +27,71 @@ export default function HeritageSection() {
             </div>
 
             {/* Heritage Key Metrics Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-neutral-200">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+              }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-neutral-200"
+            >
               {HERITAGE_STORY.stats.map((stat) => (
-                <div key={stat.label}>
+                <motion.div
+                  key={stat.label}
+                  variants={{
+                    hidden: { opacity: 0, y: 15 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+                  }}
+                  whileHover={{ y: -4 }}
+                >
                   <p className="text-2xl font-bold text-[#801424] font-editorial">
                     {stat.value}
                   </p>
                   <p className="text-xs text-neutral-500 mt-0.5">
                     {stat.label}
                   </p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             <div className="pt-2">
-              <Link
-                to="/collections?metal=gold"
-                className="inline-flex items-center gap-2 rounded-md border border-neutral-900 bg-neutral-900 px-6 py-3 text-xs font-semibold tracking-wider text-white uppercase transition-colors hover:bg-[#801424] hover:border-[#801424]"
-              >
-                <span>{HERITAGE_STORY.cta}</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} className="inline-block">
+                <Link
+                  to="/collections?metal=gold"
+                  className="inline-flex items-center gap-2 rounded-md border border-neutral-900 bg-neutral-900 px-6 py-3 text-xs font-semibold tracking-wider text-white uppercase shadow-sm transition-all hover:bg-[#801424] hover:border-[#801424] hover:shadow-lg"
+                >
+                  <span>{HERITAGE_STORY.cta}</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Showroom Image Showcase */}
-          <div className="lg:col-span-6">
-            <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl">
+          <motion.div
+            initial={{ opacity: 0, x: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6"
+          >
+            <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl group">
               <img
                 src={HERITAGE_STORY.image}
                 alt="Flagship Boutique Interior of P. C. Chandra Jewellers"
-                className="h-[360px] sm:h-[420px] w-full object-cover"
+                className="h-[360px] sm:h-[420px] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
 
               {/* Heritage Badge Overlay */}
-              <div className="absolute top-4 right-4 flex items-center gap-2 rounded-xl bg-white/95 px-4 py-2 text-neutral-900 shadow-md">
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="absolute top-4 right-4 flex items-center gap-2 rounded-xl bg-white/95 px-4 py-2 text-neutral-900 shadow-lg backdrop-blur-xs"
+              >
                 <img
                   src="/assets/85-years-completion.webp"
                   alt="85 Years"
@@ -68,9 +105,9 @@ export default function HeritageSection() {
                     Four Generations
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
