@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useSearchParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -54,6 +55,18 @@ export default function Collections() {
 
   const [wishlist, setWishlist] = useState([])
   const [cartAdded, setCartAdded] = useState({})
+
+  // Prevent background scroll when mobile filter drawer is open
+  useEffect(() => {
+    if (mobileFiltersOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileFiltersOpen])
 
   // Keep state comprehensively synced with all URL search params changes
   useEffect(() => {
@@ -326,7 +339,7 @@ export default function Collections() {
   }, [bannerInfo, searchQuery])
 
   return (
-    <div className="min-h-screen bg-[#FBF9F6] text-neutral-900 flex flex-col">
+    <div className="min-h-screen bg-[#FBF9F6] text-neutral-900 flex flex-col w-full max-w-full overflow-x-hidden pb-16 md:pb-0">
       <Header />
 
       {/* Breadcrumb Bar */}
@@ -869,108 +882,275 @@ export default function Collections() {
         </div>
       </main>
 
-      {/* Mobile Filters Modal Drawer */}
-      {mobileFiltersOpen && (
-        <div className="fixed inset-0 z-50 flex bg-black/50 lg:hidden">
-          <div className="relative ml-auto w-full max-w-xs bg-white p-6 h-full overflow-y-auto shadow-2xl flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between pb-4 border-b border-neutral-200 mb-5">
-                <h3 className="text-base font-bold uppercase tracking-wider text-neutral-900">
-                  Filters
-                </h3>
-                <button
-                  type="button"
+      {/* Mobile Filters Modal Drawer via createPortal with Smooth Animation & Full Filter Parity */}
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
+            {mobileFiltersOpen && (
+              <div className="fixed inset-0 z-[99999] flex lg:hidden">
+                {/* Backdrop Blur Overlay with Smooth Fade */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
                   onClick={() => setMobileFiltersOpen(false)}
-                  className="p-1 text-neutral-500 hover:text-neutral-900"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Price Slider */}
-              <div className="mb-5 pb-5 border-b border-neutral-200">
-                <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 block mb-2">
-                  Price: Up to ₹{priceRange.max.toLocaleString('en-IN')}
-                </span>
-                <input
-                  type="range"
-                  min="0"
-                  max="500000"
-                  step="5000"
-                  value={priceRange.max}
-                  onChange={(e) =>
-                    setPriceRange((prev) => ({ ...prev, max: Number(e.target.value) }))
-                  }
-                  className="w-full accent-[#801424]"
+                  className="fixed inset-0 bg-neutral-950/60 backdrop-blur-xs"
                 />
-              </div>
 
-              {/* Categories */}
-              <div className="mb-5 pb-5 border-b border-neutral-200">
-                <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 block mb-2">
-                  Category
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {CATEGORIES_LIST.map((c) => (
-                    <button
-                      key={c.id}
-                      type="button"
-                      onClick={() => handleCategoryClick(c.id)}
-                      className={`text-[11px] px-2.5 py-1 rounded-full ${
-                        activeCategory === c.id
-                          ? 'bg-[#801424] text-white'
-                          : 'bg-neutral-100 text-neutral-700'
-                      }`}
-                    >
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                {/* Sliding Drawer Container with Silky Spring Curve */}
+                <motion.div
+                  initial={{ x: '100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '100%' }}
+                  transition={{
+                    type: 'spring',
+                    damping: 30,
+                    stiffness: 280,
+                    mass: 0.8,
+                  }}
+                  className="relative ml-auto flex h-full h-dvh max-h-screen w-[88vw] max-w-[360px] flex-col bg-white shadow-2xl z-10 overflow-hidden"
+                >
+                  {/* Sticky Header */}
+                  <div className="flex items-center justify-between border-b border-neutral-200 px-5 py-4 bg-white shrink-0">
+                    <div className="flex items-center gap-2">
+                      <SlidersHorizontal className="h-4 w-4 text-[#801424]" />
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-900">
+                        Filter Creations
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={clearAllFilters}
+                        className="text-xs font-semibold text-[#801424] hover:underline"
+                      >
+                        Clear All
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMobileFiltersOpen(false)}
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100 text-neutral-600 transition-colors hover:bg-[#801424] hover:text-white"
+                        aria-label="Close filters"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
 
-              {/* Gold Color */}
-              <div className="mb-5 pb-5 border-b border-neutral-200">
-                <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 block mb-2">
-                  Gold Color
-                </span>
-                <div className="space-y-1.5">
-                  {GOLD_COLORS.map((col) => (
-                    <label key={col} className="flex items-center gap-2 text-xs text-neutral-700">
+                  {/* Scrollable Filters Content Body */}
+                  <div className="flex-1 overflow-y-auto p-5 space-y-6 no-scrollbar">
+                    {/* Category Selection */}
+                    <div className="border-b border-neutral-150 pb-5">
+                      <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 block mb-3">
+                        — Category
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {CATEGORIES_LIST.map((c) => (
+                          <button
+                            key={c.id}
+                            type="button"
+                            onClick={() => handleCategoryClick(c.id)}
+                            className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
+                              activeCategory === c.id
+                                ? 'bg-[#801424] text-white shadow-xs font-semibold'
+                                : 'bg-[#FAF8F5] text-neutral-700 hover:bg-neutral-200/70'
+                            }`}
+                          >
+                            {c.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Price Slider + Exact Min/Max Inputs (copied from desktop) */}
+                    <div className="border-b border-neutral-150 pb-5">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold uppercase tracking-wider text-neutral-800">
+                          — Price
+                        </span>
+                        <span className="text-[11px] text-neutral-500 font-medium">
+                          Up to ₹{priceRange.max.toLocaleString('en-IN')}
+                        </span>
+                      </div>
                       <input
-                        type="checkbox"
-                        checked={selectedColors.includes(col)}
-                        onChange={(e) => {
-                          if (e.target.checked) setSelectedColors([...selectedColors, col])
-                          else setSelectedColors(selectedColors.filter((x) => x !== col))
-                        }}
-                        className="rounded text-[#801424]"
+                        type="range"
+                        min="0"
+                        max="500000"
+                        step="5000"
+                        value={priceRange.max}
+                        onChange={(e) =>
+                          setPriceRange((prev) => ({ ...prev, max: Number(e.target.value) }))
+                        }
+                        className="w-full accent-[#801424] cursor-pointer"
                       />
-                      <span>{col}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
+                      <div className="flex items-center gap-2 mt-3">
+                        <div className="flex-1">
+                          <span className="text-[10px] text-neutral-400 block mb-0.5">Min (₹)</span>
+                          <input
+                            type="number"
+                            value={priceRange.min}
+                            onChange={(e) =>
+                              setPriceRange((prev) => ({ ...prev, min: Math.max(0, Number(e.target.value)) }))
+                            }
+                            className="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-xs text-neutral-800 focus:border-[#801424] focus:outline-none"
+                          />
+                        </div>
+                        <span className="text-neutral-400 self-end mb-1">-</span>
+                        <div className="flex-1">
+                          <span className="text-[10px] text-neutral-400 block mb-0.5">Max (₹)</span>
+                          <input
+                            type="number"
+                            value={priceRange.max}
+                            onChange={(e) =>
+                              setPriceRange((prev) => ({ ...prev, max: Math.max(0, Number(e.target.value)) }))
+                            }
+                            className="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-xs text-neutral-800 focus:border-[#801424] focus:outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-            <div className="pt-4 border-t border-neutral-200 flex gap-2">
-              <button
-                type="button"
-                onClick={clearAllFilters}
-                className="flex-1 py-2.5 text-xs font-semibold uppercase text-neutral-600 border border-neutral-300 rounded-md"
-              >
-                Reset
-              </button>
-              <button
-                type="button"
-                onClick={() => setMobileFiltersOpen(false)}
-                className="flex-1 py-2.5 text-xs font-semibold uppercase bg-[#801424] text-white rounded-md"
-              >
-                Apply ({filteredProducts.length})
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                    {/* Delivery Days (copied from desktop) */}
+                    <div className="border-b border-neutral-150 pb-5">
+                      <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 block mb-3">
+                        — Delivery Days
+                      </span>
+                      <div className="space-y-2.5">
+                        {DELIVERY_OPTIONS.map((opt) => (
+                          <label
+                            key={opt.value}
+                            className="flex items-center gap-2.5 text-xs text-neutral-700 cursor-pointer hover:text-[#801424]"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedDelivery.includes(opt.value)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedDelivery([...selectedDelivery, opt.value])
+                                } else {
+                                  setSelectedDelivery(selectedDelivery.filter((v) => v !== opt.value))
+                                }
+                              }}
+                              className="rounded border-neutral-300 text-[#801424] focus:ring-[#801424]"
+                            />
+                            <span>{opt.label}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Gold Color (copied from desktop) */}
+                    <div className="border-b border-neutral-150 pb-5">
+                      <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 block mb-3">
+                        — Gold Color
+                      </span>
+                      <div className="space-y-2.5">
+                        {GOLD_COLORS.map((color) => (
+                          <label
+                            key={color}
+                            className="flex items-center gap-2.5 text-xs text-neutral-700 cursor-pointer hover:text-[#801424]"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedColors.includes(color)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedColors([...selectedColors, color])
+                                } else {
+                                  setSelectedColors(selectedColors.filter((c) => c !== color))
+                                }
+                              }}
+                              className="rounded border-neutral-300 text-[#801424] focus:ring-[#801424]"
+                            />
+                            <span>{color}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Jewellery For (copied from desktop) */}
+                    <div className="border-b border-neutral-150 pb-5">
+                      <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 block mb-3">
+                        — Jewellery For
+                      </span>
+                      <div className="space-y-2.5">
+                        {GENDERS.map((g) => (
+                          <label
+                            key={g}
+                            className="flex items-center gap-2.5 text-xs text-neutral-700 cursor-pointer hover:text-[#801424]"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedGenders.includes(g)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedGenders([...selectedGenders, g])
+                                } else {
+                                  setSelectedGenders(selectedGenders.filter((item) => item !== g))
+                                }
+                              }}
+                              className="rounded border-neutral-300 text-[#801424] focus:ring-[#801424]"
+                            />
+                            <span>{g}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Metal & Purity (copied from desktop) */}
+                    <div className="pb-2">
+                      <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 block mb-3">
+                        — Metal & Purity
+                      </span>
+                      <div className="space-y-2.5">
+                        {METAL_PURITIES.map((purity) => (
+                          <label
+                            key={purity}
+                            className="flex items-center gap-2.5 text-xs text-neutral-700 cursor-pointer hover:text-[#801424]"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedPurities.includes(purity)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedPurities([...selectedPurities, purity])
+                                } else {
+                                  setSelectedPurities(selectedPurities.filter((p) => p !== purity))
+                                }
+                              }}
+                              className="rounded border-neutral-300 text-[#801424] focus:ring-[#801424]"
+                            />
+                            <span>{purity}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sticky Action Footer */}
+                  <div className="border-t border-neutral-200 bg-white p-4 shrink-0 flex gap-2.5 shadow-lg">
+                    <button
+                      type="button"
+                      onClick={clearAllFilters}
+                      className="flex-1 py-3 text-xs font-bold uppercase tracking-wider text-neutral-700 border border-neutral-300 rounded-xl hover:bg-neutral-50 transition-colors"
+                    >
+                      Reset All
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMobileFiltersOpen(false)}
+                      className="flex-1 py-3 text-xs font-bold uppercase tracking-wider bg-[#801424] text-white rounded-xl shadow-md hover:bg-[#9B1127] transition-colors"
+                    >
+                      Apply ({filteredProducts.length})
+                    </button>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
 
       <Footer />
     </div>

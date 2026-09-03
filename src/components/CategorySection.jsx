@@ -26,7 +26,7 @@ export default function CategorySection() {
           </p>
 
           {/* Gender Filter Tabs with Fluid Animated Pill */}
-          <div className="inline-flex items-center rounded-full border border-neutral-200 bg-[#FAF8F5] p-1.5 mt-7 shadow-xs relative">
+          <div className="inline-flex max-w-full items-center rounded-full border border-neutral-200 bg-[#FAF8F5] p-1 sm:p-1.5 mt-6 sm:mt-7 shadow-xs relative overflow-x-auto no-scrollbar">
             {GENDER_TABS.map((tab) => {
               const isActive = activeGender === tab.id
               return (
@@ -34,7 +34,7 @@ export default function CategorySection() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveGender(tab.id)}
-                  className={`relative rounded-full px-6 py-2.5 text-[14px] font-medium transition-colors z-10 ${
+                  className={`relative shrink-0 rounded-full px-3.5 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-[14px] font-medium transition-colors z-10 whitespace-nowrap ${
                     isActive ? 'text-white font-semibold' : 'text-neutral-600 hover:text-neutral-900'
                   }`}
                 >

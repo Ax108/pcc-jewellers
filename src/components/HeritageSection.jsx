@@ -5,18 +5,18 @@ import { HERITAGE_STORY } from '../configs/siteContent'
 
 export default function HeritageSection() {
   return (
-    <section className="bg-[#FAF8F5] py-16 sm:py-20 border-b border-neutral-200 overflow-hidden">
+    <section className="bg-[#FAF8F5] py-14 sm:py-20 border-b border-neutral-200 overflow-hidden w-full max-w-full">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Content Column */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 space-y-6"
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 w-full min-w-0 space-y-6"
           >
-            <h2 className="text-4xl sm:text-5xl font-normal text-neutral-900 font-editorial leading-tight tracking-tight">
+            <h2 className="text-3xl sm:text-5xl font-normal text-neutral-900 font-editorial leading-tight tracking-tight">
               {HERITAGE_STORY.title}
             </h2>
 
@@ -71,17 +71,17 @@ export default function HeritageSection() {
 
           {/* Showroom Image Showcase */}
           <motion.div
-            initial={{ opacity: 0, x: 30, scale: 0.95 }}
-            whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6"
+            initial={{ opacity: 0, y: 25, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 w-full min-w-0"
           >
-            <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl group">
+            <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl group w-full">
               <img
                 src={HERITAGE_STORY.image}
                 alt="Flagship Boutique Interior of P. C. Chandra Jewellers"
-                className="h-[360px] sm:h-[420px] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                className="h-[280px] sm:h-[420px] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
 
               {/* Heritage Badge Overlay */}
@@ -89,19 +89,19 @@ export default function HeritageSection() {
                 initial={{ opacity: 0, y: -10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="absolute top-4 right-4 flex items-center gap-2 rounded-xl bg-white/95 px-4 py-2 text-neutral-900 shadow-lg backdrop-blur-xs"
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-2 rounded-xl bg-white/95 px-3 py-1.5 sm:px-4 sm:py-2 text-neutral-900 shadow-lg backdrop-blur-xs max-w-[calc(100%-24px)]"
               >
                 <img
                   src="/assets/85-years-completion.webp"
                   alt="85 Years"
-                  className="h-10 w-auto"
+                  className="h-8 sm:h-10 w-auto shrink-0"
                 />
-                <div className="border-l border-neutral-200 pl-2">
-                  <p className="text-[10px] font-bold tracking-wider text-[#801424] uppercase">
+                <div className="border-l border-neutral-200 pl-2 min-w-0">
+                  <p className="text-[10px] font-bold tracking-wider text-[#801424] uppercase truncate">
                     Unmatched Legacy
                   </p>
-                  <p className="text-xs font-semibold text-neutral-700">
+                  <p className="text-xs font-semibold text-neutral-700 truncate">
                     Four Generations
                   </p>
                 </div>

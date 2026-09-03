@@ -25,15 +25,15 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-white text-neutral-900 flex flex-col">
-      {/* 100vh Hero Viewport: Header + Hero occupies exactly full screen on load */}
-      <div className="h-screen w-full flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-white text-neutral-900 flex flex-col pb-16 md:pb-0 w-full max-w-full overflow-x-hidden">
+      {/* 100dvh Hero Viewport: Header + Hero occupies exactly full screen on both phone & desktop */}
+      <div className="h-dvh min-h-dvh w-full flex flex-col overflow-hidden">
         <Header />
         <HeroBanner />
       </div>
 
       {/* Main Scrollable Content */}
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {/* Full-Width Panoramic Campaign Banners below Hero */}
         <CampaignBanners />
 
