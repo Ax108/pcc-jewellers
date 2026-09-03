@@ -96,19 +96,19 @@ export default function HeroBanner() {
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1 sm:flex-none">
                 <Link
                   to="/collections"
-                  className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-[#801424] px-4 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-semibold text-white shadow-xl transition-all hover:bg-[#9B1C2E] hover:shadow-2xl hover:shadow-[#801424]/40"
+                  className="flex h-11 sm:h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-transparent bg-[#801424] px-4 sm:px-6 text-xs sm:text-sm font-semibold text-white shadow-xl transition-all hover:bg-[#9B1C2E] hover:shadow-2xl hover:shadow-[#801424]/40"
                 >
-                  <span>{HERO_DATA.primaryCta}</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <span className="truncate">{HERO_DATA.primaryCta}</span>
+                  <ArrowRight className="h-4 w-4 shrink-0" />
                 </Link>
               </motion.div>
 
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1 sm:flex-none">
                 <a
                   href="#video-consult"
-                  className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-3.5 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-semibold text-white shadow-sm backdrop-blur-md transition-colors hover:border-white hover:bg-white/20"
+                  className="flex h-11 sm:h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-3.5 sm:px-6 text-xs sm:text-sm font-semibold text-white shadow-sm backdrop-blur-md transition-colors hover:border-white hover:bg-white/20"
                 >
-                  <Video className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-amber-300" />
+                  <Video className="h-4 w-4 shrink-0 text-amber-300" />
                   <span className="hidden xs:inline">{HERO_DATA.secondaryCta}</span>
                   <span className="xs:hidden">Video Call</span>
                 </a>

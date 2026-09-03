@@ -222,35 +222,35 @@ export default function Footer() {
                 </h4>
 
                 {/* Payment Icons Grid matching the official website */}
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[#1A1F71] shadow-xs">
-                    <FaCcVisa className="h-4 w-4" />
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-[#1A1F71] shadow-sm">
+                    <FaCcVisa className="h-6 w-6" />
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[#EB001B] shadow-xs">
-                    <FaCcMastercard className="h-4 w-4" />
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-[#EB001B] shadow-sm">
+                    <FaCcMastercard className="h-6 w-6" />
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[#006FCF] shadow-xs">
-                    <FaCcAmex className="h-4 w-4" />
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-[#006FCF] shadow-sm">
+                    <FaCcAmex className="h-6 w-6" />
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[10px] font-bold text-neutral-800 shadow-xs">
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-xs font-bold text-neutral-900 shadow-sm">
                     RuPay
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[10px] font-bold text-neutral-800 shadow-xs">
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-xs font-bold text-neutral-900 shadow-sm">
                     UPI
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-neutral-700 shadow-xs">
-                    <SiGooglepay className="h-3.5 w-3.5" />
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-neutral-800 shadow-sm overflow-hidden">
+                    <SiGooglepay className="h-6 w-10 scale-[1.65]" />
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[#002970] shadow-xs">
-                    <SiPaytm className="h-3.5 w-3.5" />
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-[#002970] shadow-sm overflow-hidden">
+                    <SiPaytm className="h-6 w-11 scale-[1.65]" />
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[9px] font-bold text-neutral-800 shadow-xs">
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-[11px] font-bold text-neutral-900 shadow-sm">
                     NET
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[9px] font-bold text-neutral-800 shadow-xs">
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-[11px] font-bold text-neutral-900 shadow-sm">
                     BHIM
                   </div>
-                  <div className="flex h-7 w-11 items-center justify-center rounded bg-white text-[9px] font-bold text-neutral-800 shadow-xs">
+                  <div className="flex h-9 w-14 items-center justify-center rounded-md bg-white text-[11px] font-bold text-neutral-900 shadow-sm">
                     BANK
                   </div>
                 </div>

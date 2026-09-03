@@ -89,16 +89,8 @@ export default function Header() {
                 <span>Toll Free: {SITE_INFO.tollFree}</span>
               </a>
               <a
-                href="#stores"
-                className="inline-flex items-center gap-1.5 transition-colors hover:text-[#801424]"
-              >
-                <MapPin className="h-3.5 w-3.5 text-neutral-400" />
-                <span className="hidden xs:inline">Showrooms</span>
-                <span className="xs:hidden">Stores</span>
-              </a>
-              <a
                 href="#track"
-                className="hidden transition-colors hover:text-[#801424] md:inline"
+                className="hidden transition-colors hover:text-[#801424] sm:inline"
               >
                 Track Order
               </a>
@@ -205,6 +197,15 @@ export default function Header() {
                   aria-label="Account"
                 >
                   <User className="h-5 w-5" />
+                </a>
+
+                {/* Stores CTA Button (Desktop - shifts to mobile hamburger menu) */}
+                <a
+                  href="#stores"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-[#801424]/30 bg-[#801424]/5 px-3.5 py-1.5 text-xs font-semibold text-[#801424] transition-all hover:bg-[#801424] hover:text-white shadow-2xs hover:shadow-xs active:scale-95"
+                >
+                  <MapPin className="h-3.5 w-3.5 shrink-0" />
+                  <span>Stores</span>
                 </a>
               </div>
             </div>
@@ -379,13 +380,15 @@ export default function Header() {
                       <a
                         href="#stores"
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-50"
+                        className="group flex items-center justify-between rounded-lg bg-[#801424]/5 border border-[#801424]/20 px-3 py-2.5 text-xs font-semibold text-[#801424] transition-colors hover:bg-[#801424] hover:text-white"
                       >
                         <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4 text-[#801424]" />
-                          <span>Find Showrooms</span>
+                          <MapPin className="h-4 w-4 shrink-0 text-[#801424] group-hover:text-white" />
+                          <span>Stores</span>
                         </div>
-                        <span className="text-[10px] text-neutral-400">100+</span>
+                        <span className="text-[10px] font-bold bg-[#801424] text-white px-2 py-0.5 rounded-full group-hover:bg-white group-hover:text-[#801424]">
+                          100+ Showrooms
+                        </span>
                       </a>
 
                       <a
