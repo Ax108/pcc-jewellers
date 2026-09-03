@@ -67,7 +67,7 @@ export default function Header() {
       <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/95 backdrop-blur-md">
         {/* Top Utility Bar */}
         <div className="border-b border-neutral-100 bg-[#FAF8F5] text-[11px] sm:text-[13px] text-neutral-600">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-1.5 sm:px-6 sm:py-2">
+          <div className="flex w-full items-center justify-between px-3 py-1.5 sm:px-6 md:px-8 lg:px-10 sm:py-2">
             <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
               <span className="inline-flex items-center gap-1.5 font-semibold text-[#801424] shrink-0">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#801424] animate-pulse" />
@@ -99,8 +99,8 @@ export default function Header() {
         </div>
 
         {/* Main Header Bar */}
-        <div className="relative mx-auto max-w-7xl px-3 sm:px-6 py-2.5 sm:py-3">
-          <div className="relative flex items-center justify-between gap-2 sm:gap-4">
+        <div className="relative w-full px-3 sm:px-6 md:px-8 lg:px-10 py-2.5 sm:py-3">
+          <div className="relative flex min-h-[48px] sm:min-h-[72px] md:min-h-[80px] items-center justify-between gap-2 sm:gap-4">
             {/* Left: Hamburger + Badges */}
             <div className="flex items-center gap-2 sm:gap-6 z-10">
               <button
@@ -126,10 +126,10 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Official Brand Logo - Dead Centered on Mobile */}
+            {/* Official Brand Logo - Centered on Mobile and Desktop */}
             <Link
               to="/"
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center shrink-0 md:static md:translate-x-0 md:translate-y-0"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center shrink-0 z-20"
             >
               <img
                 src="/assets/logo.avif"
